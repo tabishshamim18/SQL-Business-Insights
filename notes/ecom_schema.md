@@ -60,3 +60,15 @@
 | sessions | Identifies details about customer sessions | Joins to `customers`, `devices` | When the session started and ended |
 | attribution_touches | Identifies how the customer is coming to the platform | Joins to `attribution_campaigns`, `sessions` | When the attribution touch occurred |
 | payment_intents | Identifies the amount and status of payment | Joins to `orders`, `payment_methods` | When the payment intent was generated |
+
+
+## C. ER Diagram
+
+![ER Diagram of ecom schema](diagram.jpg)
+
+## D. Five Things That Surprised Me
+
+- **`customers.source` and `customers.utm_source` are duplicate columns** — both hold the same value. Worth deciding which one is canonical before using either in a query, and documenting that choice so future queries don't accidentally join or filter on the "wrong" one.
+- **`orders.status` string formatting is inconsistent** — values aren't cleanly cased/formatted. Normalize (e.g. `lower(status)`) before grouping or filtering, or you'll silently split what should be one bucket into several.
+- **Cancelled orders have `payment_status = 'failed'`** — a cancelled order isn't just a fulfillment-state thing; it also shows up as a failed payment. Any query counting "failed payments" needs to decide whether cancelled-order failures should be included or excluded, since conflating the two overstates genuine payment failures.
+- **`orders.total` ≠ `SUM(order_items.line_total)`** — because `orders.total = subtotal + tax`, not just the sum of line items. This is exactly the divergence the brief warns about (§7E example) — decide which is "canonical" for revenue
