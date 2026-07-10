@@ -48,3 +48,15 @@
 | shipments | 32,089 | Stores details about shipment carrier, shipping and delivery date | One row per order |
 | shipping_carriers | 3 | Details about shipment carriers | One row per carrier |
 | shipping_methods | 3 | Details about shipment method and prices | One row per method |
+
+
+## B. Per-Column Notes
+
+| Table Name | IDs | Joins to | Timestamps |
+|---|---|---|---|
+| orders | Identifies orders | Joins to `customers`, `sessions`, `price_lists`, `customer_addresses`, `coupons`, `order_items` | When order was created |
+| order_items | Identifies order line items | Joins to `product_variants` | - |
+| customers | Identifies details about each customer | Joins to `orders`, `sessions`, `loyalty_accounts`, `segment_memberships` | When customer account was created |
+| sessions | Identifies details about customer sessions | Joins to `customers`, `devices` | When the session started and ended |
+| attribution_touches | Identifies how the customer is coming to the platform | Joins to `attribution_campaigns`, `sessions` | When the attribution touch occurred |
+| payment_intents | Identifies the amount and status of payment | Joins to `orders`, `payment_methods` | When the payment intent was generated |
