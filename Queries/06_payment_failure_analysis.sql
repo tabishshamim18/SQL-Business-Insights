@@ -22,12 +22,13 @@ WITH payment_attempts
           GROUP BY i.payment_method_id,
                    t.error_code,
                    t.error_message ) 
-  SELECT method_name                             AS payment_method,
-         attempts                                failures,
-         failure_rate,
-         error_code                              AS top_error_code,
-         error_message                           AS top_error_message,
-         100.0 * failure_reason_count / failures AS top_error_share_of_failures
-  FROM   payment_attempts a
-         LEFT JOIN payment_failures f ON a.payment_method_id = f.payment_method_id
-  AND 	 rn = 1
+  SELECT 	method_name                             AS payment_method,
+         	attempts                                failures,
+         	failure_rate,
+         	error_code                              AS top_error_code,
+         	error_message                           AS top_error_message,
+         	100.0 * failure_reason_count / failures AS top_error_share_of_failures
+  FROM   	payment_attempts a
+         	LEFT JOIN payment_failures f ON a.payment_method_id = f.payment_method_id
+  AND 	 	rn = 1
+  ORDER BY  failures DESC
