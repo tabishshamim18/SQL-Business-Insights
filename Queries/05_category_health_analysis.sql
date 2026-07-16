@@ -34,4 +34,5 @@ WITH category_sales
            100.0 * Max(returns) / Nullif(Count(order_id),0) AS return_rate_pct
   FROM     category_sales c
            LEFT JOIN category_return r USING(category_id)
-  GROUP BY category 
+  GROUP BY category
+  ORDER BY revenue DESC
