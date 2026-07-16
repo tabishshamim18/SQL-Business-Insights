@@ -25,5 +25,4 @@ WITH delivery_SLA
   FROM     delivery_SLA
   GROUP BY carrier_name,
            method_name
-
-
+  ORDER BY late_rate DESC
