@@ -32,5 +32,4 @@ WITH touches
   SELECT *,
          100.0 * last_touch_revenue / Sum(last_touch_revenue) OVER() AS share_of_revenue
   FROM   last_touch_tbl
-  ORDER BY channel,
-           attribution_model 
+  ORDER BY first_touch_revenue DESC
