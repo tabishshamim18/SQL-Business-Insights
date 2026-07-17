@@ -86,3 +86,42 @@ while haircare, makeup, and skincare generate the least revenue and amount to ro
 
 The order count and units sold of the least selling SKUs is almost similar to the most selling SKUs by revenue, 
 need to optimise inventory for more revenue generating SKUs.
+
+
+## Q6 — Category Health Analysis
+
+The query aggregates payments attempts by each payment method, and identifies most common failure error code and messages.
+
+Used `Count(*) FILTER(WHERE status = 'failed') ` to count only failed payments, 
+used `Row_number() OVER(PARTITION BY i.payment_method_id ORDER BY Count(*) DESC) to get the top error code and message by count.
+`used Left join to join both CTEs and `AND rn = 1` to get only top errors.
+
+
+UPI transactions failed the most contributing 36% of total failures with gateway timeout being the most prominent error.
+Card transactions contribute 31% to failures, these two payment methods alone causing over 60% of failures. Anomaly is that, 
+cod payments top error is `UPI_TIMEOUT` showing that customers using upi transactions on cod orders as well.
+
+
+
+Too many transactions are failing because of timeouts, this should be checked if the gateway used are lagging or maybe having network issues.
+
+
+## Q7 — Category Health Analysis
+
+The query aggregates delivery performance by carrier and shipping method, calculating delivery KPIs, 
+late delivery and late delivery rate to evaluate SLA breaches. 
+
+Joined shipping carriers with shipping methods and used `WHERE s.status = 'delivered'` to get only delivered orders.
+Used Percentile_cont(0.5) to get the median and Percentile_cont(0.9) to get the 90th percentile delivery days.
+
+
+EcomExpress breached the SLA the most with express delivery at ~21%, same_day at ~19% and standard at ~10% and their average 
+delivery days are also the highest. With other carriers also, their same day delivery method is breaching SLA more than express and 
+standard delivery methods. The average delivery days for same day delivery is also over 3 days.
+
+
+
+Can we drop EcomExpress as our carrier and use delivery and bluedart only since they are not breaching SLA as much.
+
+
+
