@@ -124,4 +124,38 @@ standard delivery methods. The average delivery days for same day delivery is al
 Can we drop EcomExpress as our carrier and use delivery and bluedart only since they are not breaching SLA as much.
 
 
+## Q8 — Customer Lifetime Value Analysis
+
+The query aggregates customer purchase history for the last 90 days to calculate orders, revenue, aov, 
+and classifies the customers into ltv share buckets. 
+
+Used `Lower(status) != 'cancelled'` to remove cancelled orders, used `CASE WHEN Sum(total) <= 999` to divide the customers
+into buckets, and divided each buckets revenue to get the share of each bucket `Sum(total_revenue) OVER(PARTITION BY ltv_bucket) / Sum(total_revenue)`.
+
+
+The '20000+' bucket holds ~40% of the bucket and '5000-19999' holds ~30% of the customers which shows customers buying 
+activity is good. Most of them are repeat purchases but 5% of the customers made only 1 purchase who falls in '0-999' bucket.
+
+
+We need to check why some customers bought just once and never came back, is there any issue with the product or 
+service that needs attention.
+
+
+## Q9 — Repeat Purchase Interval anlysis
+
+The query calculates time, average and median days between each purchase aggregated by customer to find out repeat purchase behaviour of customers.
+
+
+Used `Lower(status) != 'cancelled'` to remove cancelled orders, used WHERE next_order_date IS NOT NULL AND next_order_date != order_date` 
+to remove same day purchases and nulls after the customers last purchase. 
+
+
+By excluding same day purchases we have over 10 average days and 6 median days between customer repeat purchases. 
+With including same day purchases average came down to 6.25 and Median days to 1. The customer also increase to 3755 from 3416. 
+But for the analysis, same day orders should be excuded because there might be customers making multiple orders affecting the metrics.
+
+We need to check why some customers bought just once and never came back, is there any issue with the product or 
+service that needs attention.
+
+
 
