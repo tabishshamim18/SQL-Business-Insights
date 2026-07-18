@@ -158,4 +158,18 @@ We need to check why some customers bought just once and never came back, is the
 service that needs attention.
 
 
+## Q10 — Attribution Comparison: First-Touch vs Last-Touch Revenue by Channel
+
+The query calculates first touch and last touch attributes like revenue, orders and revenue share for each channel.
+
+
+Used `Row_NUMBER` to partition each customer's first and last touches, and filtered the cancelled orders. Then aggregated revenue and 
+orders by each attribution and channel.
+
+
+Organic contributes to ~40% of the first touch revenue making it the strongest acquisition channel 
+and the primary driver of sales and it is effective in acquiring customers and converting them. Paid comes second with
+around 35% of revenue and referral is better than converting sales than acquiring customer but is providing meaningful support.
+
+Which channel delivers the highest return on marketing spend or customer acquisition cost?
 
